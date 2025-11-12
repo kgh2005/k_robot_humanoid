@@ -21,6 +21,7 @@ body {
     sans-serif;
   background: radial-gradient(circle at top, #1f2937, #020617 55%);
   color: var(--text-main);
+  zoom: 1.5;
 }
 
 .container {
