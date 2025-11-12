@@ -24,7 +24,7 @@ body {
 }
 
 .container {
-  max-width: 1200px;
+  max-width: 900px;
   margin: 0 auto;
   padding: 24px 16px 40px;
 }
@@ -33,7 +33,7 @@ header {
   display: flex;
   justify-content: space-between;
   align-items: baseline;
-  margin-bottom: 20px;
+  margin-bottom: 16px;
 }
 
 header h1 {
@@ -48,15 +48,7 @@ header span {
 }
 
 main {
-  display: grid;
-  grid-template-columns: minmax(0, 2fr) minmax(0, 1.3fr);
-  gap: 20px;
-}
-
-@media (max-width: 960px) {
-  main {
-    grid-template-columns: 1fr;
-  }
+  display: block;
 }
 
 .panel {
@@ -65,6 +57,7 @@ main {
   border: 1px solid var(--border);
   padding: 18px 20px 20px;
   box-shadow: 0 18px 40px rgba(0, 0, 0, 0.4);
+  margin-bottom: 12px;
 }
 
 .panel h2 {
@@ -277,87 +270,33 @@ button.small {
 }
 
 /* Undo 버튼 */
-
 .undo-row {
   margin-top: 10px;
   text-align: right;
 }
 
-/* 대진표 */
-
-.bracket-form {
-  display: grid;
-  grid-template-columns: repeat(4, minmax(0, 1fr));
-  gap: 8px;
-  margin-bottom: 10px;
-}
-
-@media (max-width: 960px) {
-  .bracket-form {
-    grid-template-columns: repeat(2, minmax(0, 1fr));
-  }
-}
-
-.bracket-form input[type="text"] {
-  width: 100%;
-  border-radius: 10px;
-  border: 1px solid #374151;
-  background: #020617;
-  padding: 6px 8px;
-  color: var(--text-main);
-  font-size: 0.85rem;
-}
-
-.bracket-form .full-row {
-  grid-column: 1 / -1;
-  text-align: right;
-}
-
-table {
-  width: 100%;
-  border-collapse: collapse;
-  margin-top: 6px;
-  font-size: 0.86rem;
-}
-
-th,
-td {
-  padding: 6px 8px;
-  border-bottom: 1px solid #1f2937;
-  text-align: left;
-}
-
-th {
-  color: var(--text-sub);
-  font-weight: 500;
-  background: #020617;
-}
-
-tbody tr:nth-child(odd) td {
-  background: rgba(15, 23, 42, 0.7);
-}
-
-tbody tr:nth-child(even) td {
-  background: rgba(15, 23, 42, 0.4);
-}
-
-.table-actions {
-  text-align: right;
-  margin-top: 6px;
-  display: flex;
-  justify-content: space-between;
-  gap: 6px;
-  flex-wrap: wrap;
-}
-
-.table-actions span {
-  font-size: 0.78rem;
-  color: var(--text-sub);
-}
+/* Footer */
 
 footer {
   margin-top: 18px;
   text-align: right;
   font-size: 0.75rem;
   color: var(--text-sub);
+}
+
+/* ====== 알림 시 패널 깜빡임 ====== */
+
+.panel.flash {
+  animation: flash-panel 0.4s ease-in-out 4;
+}
+
+@keyframes flash-panel {
+  0%, 100% {
+    box-shadow: 0 18px 40px rgba(0, 0, 0, 0.4);
+    transform: none;
+  }
+  50% {
+    box-shadow: 0 0 30px rgba(250, 204, 21, 0.9);
+    transform: scale(1.01);
+  }
 }
