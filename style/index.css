@@ -1,0 +1,363 @@
+:root {
+  --bg: #0f172a;
+  --panel: #111827;
+  --accent-red: #f97373;
+  --accent-blue: #60a5fa;
+  --accent: #22c55e;
+  --border: #1f2937;
+  --text-main: #e5e7eb;
+  --text-sub: #9ca3af;
+  --btn-bg: #1f2937;
+  --btn-bg-hover: #374151;
+}
+
+* {
+  box-sizing: border-box;
+}
+
+body {
+  margin: 0;
+  font-family: system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI",
+    sans-serif;
+  background: radial-gradient(circle at top, #1f2937, #020617 55%);
+  color: var(--text-main);
+}
+
+.container {
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 24px 16px 40px;
+}
+
+header {
+  display: flex;
+  justify-content: space-between;
+  align-items: baseline;
+  margin-bottom: 20px;
+}
+
+header h1 {
+  margin: 0;
+  font-size: 1.6rem;
+  letter-spacing: 0.04em;
+}
+
+header span {
+  font-size: 0.9rem;
+  color: var(--text-sub);
+}
+
+main {
+  display: grid;
+  grid-template-columns: minmax(0, 2fr) minmax(0, 1.3fr);
+  gap: 20px;
+}
+
+@media (max-width: 960px) {
+  main {
+    grid-template-columns: 1fr;
+  }
+}
+
+.panel {
+  background: var(--panel);
+  border-radius: 18px;
+  border: 1px solid var(--border);
+  padding: 18px 20px 20px;
+  box-shadow: 0 18px 40px rgba(0, 0, 0, 0.4);
+}
+
+.panel h2 {
+  margin: 0 0 12px;
+  font-size: 1.1rem;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.panel h2 span.badge {
+  font-size: 0.72rem;
+  padding: 2px 8px;
+  border-radius: 999px;
+  background: #0f172a;
+  color: var(--text-sub);
+  border: 1px solid #1f2937;
+}
+
+/* 타이머 */
+
+.timer-section {
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
+  margin-bottom: 14px;
+  border-bottom: 1px solid var(--border);
+  padding-bottom: 14px;
+}
+
+.timer-display {
+  font-size: 2.6rem;
+  font-weight: 600;
+  letter-spacing: 0.08em;
+  text-align: center;
+  padding: 10px 16px;
+  border-radius: 16px;
+  background: #020617;
+  border: 1px solid #1f2937;
+}
+
+.timer-buttons {
+  display: flex;
+  justify-content: center;
+  gap: 8px;
+  flex-wrap: wrap;
+}
+
+/* 버튼 */
+
+button {
+  cursor: pointer;
+  border-radius: 999px;
+  border: 1px solid #4b5563;
+  background: var(--btn-bg);
+  color: var(--text-main);
+  padding: 6px 16px;
+  font-size: 0.9rem;
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+  transition: background 0.15s, transform 0.1s, border-color 0.15s;
+}
+
+button:hover {
+  background: var(--btn-bg-hover);
+  transform: translateY(-1px);
+  border-color: #6b7280;
+}
+
+button:disabled {
+  opacity: 0.45;
+  cursor: default;
+  transform: none;
+}
+
+button.primary {
+  background: var(--accent);
+  border-color: var(--accent);
+  color: #022c22;
+  font-weight: 600;
+}
+
+button.primary:hover {
+  background: #4ade80;
+  border-color: #4ade80;
+}
+
+button.danger {
+  border-color: #f97373;
+  color: #fecaca;
+}
+
+/* 작은 버튼 공통 스타일 */
+button.small {
+  font-size: 0.8rem;
+  padding-inline: 10px;
+}
+
+/* 선수 섹션 */
+
+.fighters {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 16px;
+}
+
+@media (max-width: 720px) {
+  .fighters {
+    grid-template-columns: 1fr;
+  }
+}
+
+.fighter {
+  border-radius: 16px;
+  padding: 12px 14px 14px;
+  background: #020617;
+  border: 1px solid #1f2937;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.fighter.red {
+  box-shadow: 0 0 0 1px rgba(248, 113, 113, 0.25);
+}
+
+.fighter.blue {
+  box-shadow: 0 0 0 1px rgba(96, 165, 250, 0.25);
+}
+
+.fighter-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 8px;
+}
+
+.fighter label {
+  font-size: 0.8rem;
+  color: var(--text-sub);
+  margin-bottom: 4px;
+  display: block;
+}
+
+.fighter input[type="text"] {
+  width: 100%;
+  border-radius: 999px;
+  border: 1px solid #374151;
+  background: #020617;
+  padding: 6px 10px;
+  color: var(--text-main);
+  font-size: 0.9rem;
+}
+
+.color-tag {
+  font-size: 0.78rem;
+  padding: 3px 8px;
+  border-radius: 999px;
+  border: 1px solid #4b5563;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  flex-shrink: 0;
+}
+
+.color-tag.red {
+  border-color: var(--accent-red);
+  color: #fecaca;
+}
+
+.color-tag.blue {
+  border-color: var(--accent-blue);
+  color: #bfdbfe;
+}
+
+.score-display {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 8px;
+}
+
+.score-display .score-label {
+  font-size: 0.9rem;
+  color: var(--text-sub);
+}
+
+.score-value {
+  font-size: 2rem;
+  font-weight: 700;
+}
+
+.score-value.red {
+  color: var(--accent-red);
+}
+
+.score-value.blue {
+  color: var(--accent-blue);
+}
+
+.score-buttons {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px;
+}
+
+.score-buttons button {
+  flex: 1 1 90px;
+  justify-content: center;
+}
+
+/* Undo 버튼 */
+
+.undo-row {
+  margin-top: 10px;
+  text-align: right;
+}
+
+/* 대진표 */
+
+.bracket-form {
+  display: grid;
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+  gap: 8px;
+  margin-bottom: 10px;
+}
+
+@media (max-width: 960px) {
+  .bracket-form {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+}
+
+.bracket-form input[type="text"] {
+  width: 100%;
+  border-radius: 10px;
+  border: 1px solid #374151;
+  background: #020617;
+  padding: 6px 8px;
+  color: var(--text-main);
+  font-size: 0.85rem;
+}
+
+.bracket-form .full-row {
+  grid-column: 1 / -1;
+  text-align: right;
+}
+
+table {
+  width: 100%;
+  border-collapse: collapse;
+  margin-top: 6px;
+  font-size: 0.86rem;
+}
+
+th,
+td {
+  padding: 6px 8px;
+  border-bottom: 1px solid #1f2937;
+  text-align: left;
+}
+
+th {
+  color: var(--text-sub);
+  font-weight: 500;
+  background: #020617;
+}
+
+tbody tr:nth-child(odd) td {
+  background: rgba(15, 23, 42, 0.7);
+}
+
+tbody tr:nth-child(even) td {
+  background: rgba(15, 23, 42, 0.4);
+}
+
+.table-actions {
+  text-align: right;
+  margin-top: 6px;
+  display: flex;
+  justify-content: space-between;
+  gap: 6px;
+  flex-wrap: wrap;
+}
+
+.table-actions span {
+  font-size: 0.78rem;
+  color: var(--text-sub);
+}
+
+footer {
+  margin-top: 18px;
+  text-align: right;
+  font-size: 0.75rem;
+  color: var(--text-sub);
+}

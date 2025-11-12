@@ -1,0 +1,131 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+  <meta charset="UTF-8" />
+  <title>휴머노이드 격투 경기 관리</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <!-- 스타일 -->
+  <link rel="stylesheet" href="style/index.css" />
+</head>
+<body>
+  <div class="container">
+    <header>
+      <h1>휴머노이드 격투 경기 관리</h1>
+      <span>Stopwatch · 다운/슬립다운 점수 · 대진표 관리</span>
+    </header>
+
+    <main>
+      <!-- 왼쪽: 경기 진행 패널 -->
+      <section class="panel">
+        <h2>
+          경기 진행
+          <span class="badge">Referee View</span>
+        </h2>
+
+        <!-- 타이머 -->
+        <div class="timer-section">
+          <div id="timerDisplay" class="timer-display">00:00.00</div>
+          <div class="timer-buttons">
+            <button id="startBtn" class="primary">시작 / 재개</button>
+            <button id="pauseBtn">일시정지</button>
+            <button id="resetBtn" class="danger">리셋</button>
+          </div>
+        </div>
+
+        <!-- 선수 점수 -->
+        <div class="fighters">
+          <!-- Red -->
+          <div class="fighter red">
+            <div class="fighter-header">
+              <div style="flex:1">
+                <label for="redName">파일럿 이름 (RED)</label>
+                <input type="text" id="redName" placeholder="예) 홍길동" value="RED">
+              </div>
+              <span class="color-tag red">RED</span>
+            </div>
+
+            <div class="score-display">
+              <span class="score-label">점수</span>
+              <span id="redScore" class="score-value red">0</span>
+            </div>
+
+            <div class="score-buttons">
+              <button data-fighter="red" data-score="1">다운 +1</button>
+              <button data-fighter="red" data-score="0.5">슬립다운 +0.5</button>
+              <button data-fighter="red" data-reset="true" class="small">점수 초기화</button>
+            </div>
+          </div>
+
+          <!-- Blue -->
+          <div class="fighter blue">
+            <div class="fighter-header">
+              <div style="flex:1">
+                <label for="blueName">파일럿 이름 (BLUE)</label>
+                <input type="text" id="blueName" placeholder="예) 이순신" value="BLUE">
+              </div>
+              <span class="color-tag blue">BLUE</span>
+            </div>
+
+            <div class="score-display">
+              <span class="score-label">점수</span>
+              <span id="blueScore" class="score-value blue">0</span>
+            </div>
+
+            <div class="score-buttons">
+              <button data-fighter="blue" data-score="1">다운 +1</button>
+              <button data-fighter="blue" data-score="0.5">슬립다운 +0.5</button>
+              <button data-fighter="blue" data-reset="true" class="small">점수 초기화</button>
+            </div>
+          </div>
+        </div>
+
+        <!-- ★ 새로 추가: 직전 점수 되돌리기 버튼 -->
+        <div class="undo-row">
+          <button id="undoBtn" class="small">직전 점수 취소 (Undo)</button>
+        </div>
+      </section>
+
+      <!-- 오른쪽: 대진표 패널 -->
+      <section class="panel">
+        <h2>
+          대진표
+          <span class="badge">Local 저장</span>
+        </h2>
+
+        <form id="bracketForm" class="bracket-form">
+          <input type="text" name="round" placeholder="라운드 / 경기 번호" />
+          <input type="text" name="p1" placeholder="선수 1 (RED)" />
+          <input type="text" name="p2" placeholder="선수 2 (BLUE)" />
+          <input type="text" name="winner" placeholder="승자 (선택사항)" />
+          <div class="full-row">
+            <button type="submit" class="primary">매치 추가</button>
+          </div>
+        </form>
+
+        <table>
+          <thead>
+            <tr>
+              <th style="width:18%">라운드</th>
+              <th style="width:26%">선수 1</th>
+              <th style="width:26%">선수 2</th>
+              <th style="width:20%">승자</th>
+              <th style="width:10%">관리</th>
+            </tr>
+          </thead>
+          <tbody id="bracketBody"></tbody>
+        </table>
+
+        <div class="table-actions">
+          <span>※ 대진표는 이 브라우저에 자동 저장됩니다.</span>
+          <button id="clearBracket" class="danger small">대진표 전체 삭제</button>
+        </div>
+      </section>
+    </main>
+
+    <footer>브라우저만 있으면 어디서나 사용 가능 · 로컬 저장 방식</footer>
+  </div>
+
+  <!-- 스크립트 -->
+  <script src="script/main.js"></script>
+</body>
+</html>
