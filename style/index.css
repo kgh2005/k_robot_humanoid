@@ -77,6 +77,33 @@ main {
   border: 1px solid #1f2937;
 }
 
+/* 라운드 모드 선택 */
+
+.mode-row {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  margin-bottom: 10px;
+}
+
+.mode-label {
+  font-size: 0.9rem;
+  color: var(--text-sub);
+}
+
+.mode-option {
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+  font-size: 0.9rem;
+  color: var(--text-main);
+}
+
+.mode-option input[type="radio"] {
+  accent-color: #22c55e;
+  cursor: pointer;
+}
+
 /* 타이머 */
 
 .timer-section {
