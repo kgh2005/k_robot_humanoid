@@ -14,7 +14,7 @@ document.addEventListener("DOMContentLoaded", () => {
   const startBtn = document.getElementById("startBtn");
   const pauseBtn = document.getElementById("pauseBtn");
   const resetBtn = document.getElementById("resetBtn");
-  const mainPanel = document.querySelector(".panel");
+  const mainPanel = document.querySelector(".panel[data-tab='match']");
 
   let timerInterval = null;
   let startTime = null;
@@ -85,11 +85,11 @@ document.addEventListener("DOMContentLoaded", () => {
   }
 
   /* ========= 화면 깜빡임 ========= */
-  function flashPanel() {
-    if (!mainPanel) return;
-    mainPanel.classList.add("flash");
+  function flashPanel(panelEl) {
+    if (!panelEl) return;
+    panelEl.classList.add("flash");
     setTimeout(() => {
-      mainPanel.classList.remove("flash");
+      panelEl.classList.remove("flash");
     }, 900);
   }
 
@@ -108,26 +108,26 @@ document.addEventListener("DOMContentLoaded", () => {
       // 삑: 1:00(60), 1:30(90), 1:50(110), 1:51~1:59(111~119)
       // 2:00(120) → 긴 삐비빅
       if (
-        totalSeconds === 60 ||     // 1:00
-        totalSeconds === 90 ||     // 1:30
-        totalSeconds === 110       // 1:50
+        totalSeconds === 60 ||   // 1:00
+        totalSeconds === 90 ||   // 1:30
+        totalSeconds === 110     // 1:50
       ) {
         shortBeep();
-        flashPanel();
+        flashPanel(mainPanel);
         return;
       }
 
       if (totalSeconds >= 111 && totalSeconds <= 119) {
         // 1:51 ~ 1:59
         shortBeep();
-        flashPanel();
+        flashPanel(mainPanel);
         return;
       }
 
       if (totalSeconds === ROUND_SECONDS) {
         // 2:00
         longBeepPattern();
-        flashPanel();
+        flashPanel(mainPanel);
         clearInterval(timerInterval);
         timerInterval = null;
         elapsedMs = ROUND_SECONDS * 1000;
@@ -140,19 +140,19 @@ document.addEventListener("DOMContentLoaded", () => {
       // 1:00(60) → 긴 삐비빅
       if (totalSeconds === 30 || totalSeconds === 50) {
         shortBeep();
-        flashPanel();
+        flashPanel(mainPanel);
         return;
       }
 
       if (totalSeconds >= 51 && totalSeconds <= 59) {
         shortBeep();
-        flashPanel();
+        flashPanel(mainPanel);
         return;
       }
 
       if (totalSeconds === ROUND_SECONDS) {
         longBeepPattern();
-        flashPanel();
+        flashPanel(mainPanel);
         clearInterval(timerInterval);
         timerInterval = null;
         elapsedMs = ROUND_SECONDS * 1000;
@@ -316,4 +316,181 @@ document.addEventListener("DOMContentLoaded", () => {
 
   renderScores();
   updateUndoState();
+
+  /* ========= 탭 전환 ========= */
+  const tabButtons = document.querySelectorAll(".tab-btn");
+  const tabContents = document.querySelectorAll(".tab-content");
+
+  tabButtons.forEach((btn) => {
+    btn.addEventListener("click", () => {
+      const target = btn.dataset.tab;
+      tabButtons.forEach((b) => b.classList.toggle("active", b === btn));
+      tabContents.forEach((panel) => {
+        panel.classList.toggle(
+          "hidden",
+          panel.dataset.tab !== target
+        );
+      });
+    });
+  });
+
+  /* ========= 투표 추첨 기능 ========= */
+  const voteMaxNumberInput = document.getElementById("voteMaxNumber");
+  const voteSetRangeBtn = document.getElementById("voteSetRangeBtn");
+  const voteRangeInfo = document.getElementById("voteRangeInfo");
+  const voteNameInput = document.getElementById("voteName");
+  const voteDrawBtn = document.getElementById("voteDrawBtn");
+  const voteLastResult = document.getElementById("voteLastResult");
+  const voteResultsList = document.getElementById("voteResultsList");
+  const voteExportCsvBtn = document.getElementById("voteExportCsvBtn");
+  const voteExportTxtBtn = document.getElementById("voteExportTxtBtn");
+
+  let voteMaxNumber = null;
+  const voteResults = [];        // { name, number }
+  let usedNumbers = new Set();   // 이미 뽑힌 번호들
+
+  function renderVoteRangeInfo() {
+    if (!voteMaxNumber || voteMaxNumber < 1) {
+      voteRangeInfo.textContent = "현재 범위가 설정되지 않았습니다.";
+    } else {
+      voteRangeInfo.textContent = `현재 범위: 1 ~ ${voteMaxNumber} (사용된 번호: ${usedNumbers.size}개)`;
+    }
+  }
+
+  function renderVoteResults() {
+    voteResultsList.innerHTML = "";
+    if (voteResults.length === 0) {
+      const p = document.createElement("p");
+      p.className = "vote-empty";
+      p.textContent = "아직 추첨된 데이터가 없습니다.";
+      voteResultsList.appendChild(p);
+      return;
+    }
+
+    // 오름차순 정렬 (번호 기준: 작은 번호가 위로)
+    const sorted = [...voteResults].sort((a, b) => a.number - b.number);
+
+    sorted.forEach((item) => {
+      const row = document.createElement("div");
+      row.className = "vote-result-item";
+
+      const left = document.createElement("span");
+      left.className = "name";
+      left.textContent = item.name;
+
+      const right = document.createElement("span");
+      right.className = "num";
+      right.textContent = `번호 ${item.number}`;
+
+      row.appendChild(left);
+      row.appendChild(right);
+      voteResultsList.appendChild(row);
+    });
+  }
+
+  voteSetRangeBtn.addEventListener("click", () => {
+    const value = parseInt(voteMaxNumberInput.value, 10);
+    if (Number.isNaN(value) || value < 1) {
+      alert("1 이상의 숫자를 입력해주세요.");
+      return;
+    }
+
+    // 이미 결과가 있는데 범위를 바꾸면 초기화 여부 확인
+    if (
+      voteMaxNumber !== null &&
+      voteMaxNumber !== value &&
+      (voteResults.length > 0 || usedNumbers.size > 0)
+    ) {
+      const ok = confirm(
+        "범위를 변경하면 기존 추첨 결과가 모두 삭제됩니다.\n정말 변경하시겠습니까?"
+      );
+      if (!ok) {
+        // 입력값 되돌리기
+        if (voteMaxNumber !== null) {
+          voteMaxNumberInput.value = String(voteMaxNumber);
+        } else {
+          voteMaxNumberInput.value = "";
+        }
+        return;
+      }
+      voteResults.length = 0;
+      usedNumbers.clear();
+      renderVoteResults();
+    }
+
+    voteMaxNumber = value;
+    renderVoteRangeInfo();
+  });
+
+  voteDrawBtn.addEventListener("click", () => {
+    const name = voteNameInput.value.trim();
+    if (!voteMaxNumber || voteMaxNumber < 1) {
+      alert("먼저 투표 인원 수를 설정해주세요.");
+      return;
+    }
+    if (!name) {
+      alert("이름을 입력해주세요.");
+      return;
+    }
+
+    if (usedNumbers.size >= voteMaxNumber) {
+      alert("모든 번호가 이미 사용되었습니다.");
+      return;
+    }
+
+    // 중복 안 나는 번호 뽑기
+    let randomNum;
+    do {
+      randomNum = Math.floor(Math.random() * voteMaxNumber) + 1;
+    } while (usedNumbers.has(randomNum));
+
+    usedNumbers.add(randomNum);
+    voteResults.push({ name, number: randomNum });
+
+    voteLastResult.innerHTML = `마지막 결과: <strong>${name} : ${randomNum}</strong>`;
+    renderVoteResults();
+    renderVoteRangeInfo();
+
+    voteNameInput.value = "";
+    voteNameInput.focus();
+  });
+
+  function downloadFile(filename, content, mimeType) {
+    const blob = new Blob([content], { type: mimeType });
+    const url = URL.createObjectURL(blob);
+    const a = document.createElement("a");
+    a.href = url;
+    a.download = filename;
+    document.body.appendChild(a);
+    a.click();
+    document.body.removeChild(a);
+    URL.revokeObjectURL(url);
+  }
+
+  function buildResultLines() {
+    // 파일도 번호 오름차순으로 저장
+    const sorted = [...voteResults].sort((a, b) => a.number - b.number);
+    return sorted.map((r) => `${r.name} : ${r.number}`).join("\n");
+  }
+
+  voteExportCsvBtn.addEventListener("click", () => {
+    if (voteResults.length === 0) {
+      alert("저장할 데이터가 없습니다.");
+      return;
+    }
+    const lines = buildResultLines();
+    downloadFile("vote_results.csv", lines, "text/csv;charset=utf-8");
+  });
+
+  voteExportTxtBtn.addEventListener("click", () => {
+    if (voteResults.length === 0) {
+      alert("저장할 데이터가 없습니다.");
+      return;
+    }
+    const lines = buildResultLines();
+    downloadFile("vote_results.txt", lines, "text/plain;charset=utf-8");
+  });
+
+  renderVoteRangeInfo();
+  renderVoteResults();
 });

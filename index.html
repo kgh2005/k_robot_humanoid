@@ -14,7 +14,14 @@
     </header>
 
     <main>
-      <section class="panel">
+      <!-- 탭 버튼 -->
+      <div class="tabs">
+        <button class="tab-btn active" data-tab="match">경기 진행</button>
+        <button class="tab-btn" data-tab="vote">투표 추첨</button>
+      </div>
+
+      <!-- 경기 진행 탭 -->
+      <section class="panel tab-content" data-tab="match">
         <h2>
           경기 진행
           <span class="badge">Referee View</span>
@@ -93,6 +100,58 @@
         <!-- Undo -->
         <div class="undo-row">
           <button id="undoBtn" class="small">직전 점수 취소 (Undo)</button>
+        </div>
+      </section>
+
+      <!-- 투표 추첨 탭 -->
+      <section class="panel tab-content hidden" data-tab="vote">
+        <h2>
+          투표 번호 추첨
+          <span class="badge">Random Picker</span>
+        </h2>
+
+        <div class="vote-config">
+          <label for="voteMaxNumber">투표 인원 수</label>
+          <div class="vote-config-row">
+            <input
+              type="number"
+              id="voteMaxNumber"
+              min="1"
+              placeholder="예) 30"
+            />
+            <button id="voteSetRangeBtn" class="small">범위 설정</button>
+          </div>
+          <div id="voteRangeInfo" class="vote-range-info">
+            현재 범위가 설정되지 않았습니다.
+          </div>
+        </div>
+
+        <div class="vote-draw">
+          <label for="voteName">이름</label>
+          <div class="vote-draw-row">
+            <input
+              type="text"
+              id="voteName"
+              placeholder="예) 홍길동"
+            />
+            <button id="voteDrawBtn" class="primary">번호 뽑기</button>
+          </div>
+          <div id="voteLastResult" class="vote-last-result">
+            아직 추첨 결과가 없습니다.
+          </div>
+        </div>
+
+        <div class="vote-results">
+          <div class="vote-results-header">
+            <span>추첨 결과 (번호 오름차순)</span>
+            <div class="vote-export-buttons">
+              <button id="voteExportCsvBtn" class="small">CSV로 저장</button>
+              <button id="voteExportTxtBtn" class="small">TXT로 저장</button>
+            </div>
+          </div>
+          <div class="vote-results-list" id="voteResultsList">
+            <p class="vote-empty">아직 추첨된 데이터가 없습니다.</p>
+          </div>
         </div>
       </section>
     </main>
