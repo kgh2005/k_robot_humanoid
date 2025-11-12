@@ -311,6 +311,12 @@ footer {
   color: var(--text-sub);
 }
 
+footer .credit {
+  margin-top: 2px;
+  font-size: 0.75rem;
+  opacity: 0.9;
+}
+
 /* ====== 알림 시 패널 깜빡임 ====== */
 
 .panel.flash {

@@ -1,10 +1,10 @@
 document.addEventListener("DOMContentLoaded", () => {
-  /* ========= 라운드 모드 (1분 / 3분) ========= */
-  // roundMode: "1" 또는 "3"
-  let roundMode = "3"; // 기본 3분
+  /* ========= 라운드 모드 (1분 / 2분) ========= */
+  // roundMode: "1" 또는 "2"
+  let roundMode = "2"; // 기본 2분
 
   function getRoundSeconds() {
-    return roundMode === "1" ? 60 : 180;
+    return roundMode === "1" ? 60 : 120;
   }
 
   const modeRadios = document.querySelectorAll('input[name="roundMode"]');
@@ -103,28 +103,29 @@ document.addEventListener("DOMContentLoaded", () => {
     // 0초는 아무 것도 안 함
     if (totalSeconds === 0) return;
 
-    if (roundMode === "3") {
-      // ===== 3분 모드 =====
-      // 1:00, 2:00, 2:30, 2:50, 2:51~2:59, 3:00
+    if (roundMode === "2") {
+      // ===== 2분 모드 =====
+      // 삑: 1:00(60), 1:30(90), 1:50(110), 1:51~1:59(111~119)
+      // 2:00(120) → 긴 삐비빅
       if (
-        totalSeconds === 60 ||
-        totalSeconds === 120 ||
-        totalSeconds === 150 ||
-        totalSeconds === 170
+        totalSeconds === 60 ||     // 1:00
+        totalSeconds === 90 ||     // 1:30
+        totalSeconds === 110       // 1:50
       ) {
         shortBeep();
         flashPanel();
         return;
       }
 
-      if (totalSeconds >= 171 && totalSeconds <= 179) {
-        // 2:51~2:59 → 카운트다운 영역: 매 초 삐빅
+      if (totalSeconds >= 111 && totalSeconds <= 119) {
+        // 1:51 ~ 1:59
         shortBeep();
         flashPanel();
         return;
       }
 
       if (totalSeconds === ROUND_SECONDS) {
+        // 2:00
         longBeepPattern();
         flashPanel();
         clearInterval(timerInterval);
@@ -135,7 +136,8 @@ document.addEventListener("DOMContentLoaded", () => {
       }
     } else {
       // ===== 1분 모드 =====
-      // 0:30, 0:50, 0:51~0:59, 1:00
+      // 삑: 0:30(30), 0:50(50), 0:51~0:59(51~59)
+      // 1:00(60) → 긴 삐비빅
       if (totalSeconds === 30 || totalSeconds === 50) {
         shortBeep();
         flashPanel();
@@ -180,7 +182,7 @@ document.addEventListener("DOMContentLoaded", () => {
     radio.addEventListener("change", () => {
       if (!radio.checked) return;
 
-      const newMode = radio.value === "1" ? "1" : "3";
+      const newMode = radio.value === "1" ? "1" : "2";
       if (newMode === roundMode) return;
 
       const ok = confirm(
@@ -266,7 +268,7 @@ document.addEventListener("DOMContentLoaded", () => {
         renderScores();
         updateUndoState();
       } else if (fighter && reset) {
-        // 점수 초기화 (해당 선수 점수만 0으로, 나머지 기능 유지)
+        // 점수 초기화 (해당 선수 점수만 0, 나머지 유지)
         const ok = confirm(
           `${fighter.toUpperCase()} 점수를 0으로 초기화합니다.\n정말 초기화할까요?`
         );
@@ -303,7 +305,7 @@ document.addEventListener("DOMContentLoaded", () => {
         return;
       }
 
-      // delta를 빼는 방식으로 되돌림
+      // delta를 반대로 적용해서 되돌림
       scores[last.fighter] -= last.delta;
       if (scores[last.fighter] < 0) scores[last.fighter] = 0;
 
