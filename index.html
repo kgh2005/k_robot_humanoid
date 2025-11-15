@@ -14,9 +14,10 @@
     </header>
 
     <main>
-      <!-- 탭 버튼 -->
+      <!-- 탭 버튼: 경기 진행 → 경기 결과 → 투표 추첨 -->
       <div class="tabs">
         <button class="tab-btn active" data-tab="match">경기 진행</button>
+        <button class="tab-btn" data-tab="results">경기 결과</button>
         <button class="tab-btn" data-tab="vote">투표 추첨</button>
       </div>
 
@@ -97,9 +98,44 @@
           </div>
         </div>
 
-        <!-- Undo -->
-        <div class="undo-row">
+        <!-- Undo + 경기 결과 저장 -->
+        <div class="row-end">
           <button id="undoBtn" class="small">직전 점수 취소 (Undo)</button>
+          <button id="saveMatchBtn" class="primary small">경기 결과 저장</button>
+        </div>
+      </section>
+
+      <!-- 경기 결과 탭 -->
+      <section class="panel tab-content hidden" data-tab="results">
+        <h2>
+          경기 결과
+          <span class="badge">Match Results</span>
+        </h2>
+
+        <div class="results-controls">
+          <button id="exportMatchesCsvBtn" class="small">CSV로 저장</button>
+          <button id="exportMatchesTxtBtn" class="small">TXT로 저장</button>
+        </div>
+
+        <div class="results-table-wrap">
+          <table class="results-table">
+            <thead>
+              <tr>
+                <th style="width:56px">#</th>
+                <th style="width:100px">진행(초)</th>
+                <th>RED 이름</th>
+                <th style="width:100px">RED 점수</th>
+                <th>BLUE 이름</th>
+                <th style="width:100px">BLUE 점수</th>
+                <th style="width:150px">작업</th>
+              </tr>
+            </thead>
+            <tbody id="matchResultsBody">
+              <tr class="empty">
+                <td colspan="7">아직 저장된 결과가 없습니다.</td>
+              </tr>
+            </tbody>
+          </table>
         </div>
       </section>
 
@@ -160,6 +196,16 @@
       <div>브라우저만 있으면 어디서나 사용 가능</div>
       <div class="credit">Made by Geunhyeong Kim, 19th ROBIT Humanoid Team.</div>
     </footer>
+  </div>
+
+  <!-- 번호 뽑기 말풍선 오버레이 -->
+  <div id="bubbleOverlay" class="bubble-overlay bubble-hidden">
+    <div class="bubble">
+      <div class="bubble-title">추첨 결과</div>
+      <div class="bubble-line"><span id="bubbleName"></span> 님의 번호는</div>
+      <div id="bubbleNumber" class="bubble-number">00</div>
+      <button id="bubbleOkBtn" class="primary">확인</button>
+    </div>
   </div>
 
   <script src="script/main.js"></script>

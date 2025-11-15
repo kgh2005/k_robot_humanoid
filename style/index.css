@@ -22,11 +22,10 @@ body {
 
 body {
   margin: 0;
-  font-family: system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI",
-    sans-serif;
+  font-family: system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
   background: radial-gradient(circle at top, #1f2937, #020617 55%);
   color: var(--text-main);
-  zoom: 1.3; /* 130% 확대 고정 */
+  zoom: 1.3;
 }
 
 .container {
@@ -58,10 +57,8 @@ header span {
 
 main {
   display: block;
-  flex: 1 0 auto; /* footer를 아래로 밀기 */
+  flex: 1 0 auto;
 }
-
-/* 탭 버튼 */
 
 .tabs {
   display: inline-flex;
@@ -93,8 +90,6 @@ main {
   color: #bbf7d0;
 }
 
-/* 판넬 공통 */
-
 .panel {
   background: var(--panel);
   border-radius: 18px;
@@ -112,7 +107,7 @@ main {
   gap: 8px;
 }
 
-.panel h2 span.badge {
+.panel h2 .badge {
   font-size: 0.72rem;
   padding: 2px 8px;
   border-radius: 999px;
@@ -124,8 +119,6 @@ main {
 .tab-content.hidden {
   display: none;
 }
-
-/* 라운드 모드 선택 */
 
 .mode-row {
   display: flex;
@@ -151,8 +144,6 @@ main {
   accent-color: #22c55e;
   cursor: pointer;
 }
-
-/* 타이머 */
 
 .timer-section {
   display: flex;
@@ -181,8 +172,6 @@ main {
   flex-wrap: wrap;
 }
 
-/* 버튼 */
-
 button {
   cursor: pointer;
   border-radius: 999px;
@@ -194,7 +183,9 @@ button {
   display: inline-flex;
   align-items: center;
   gap: 4px;
-  transition: background 0.15s, transform 0.1s, border-color 0.15s;
+  transition: background 0.15s;
+  transition: transform 0.1s;
+  transition: border-color 0.15s;
 }
 
 button:hover {
@@ -226,13 +217,10 @@ button.danger {
   color: #fecaca;
 }
 
-/* 작은 버튼 공통 스타일 */
 button.small {
   font-size: 0.8rem;
   padding-inline: 10px;
 }
-
-/* 선수 섹션 */
 
 .fighters {
   display: grid;
@@ -344,13 +332,13 @@ button.small {
   justify-content: center;
 }
 
-/* Undo 버튼 */
-.undo-row {
+.row-end {
   margin-top: 10px;
-  text-align: right;
+  display: flex;
+  gap: 8px;
+  justify-content: flex-end;
 }
 
-/* Footer - 항상 맨 아래 고정 느낌 */
 footer {
   margin-top: auto;
   text-align: right;
@@ -365,14 +353,12 @@ footer .credit {
   opacity: 0.9;
 }
 
-/* ====== 알림 시 패널 깜빡임 ====== */
-
 .panel.flash {
   animation: flash-panel 0.4s ease-in-out 4;
 }
 
 @keyframes flash-panel {
-  0%, 100% {
+  0% {
     box-shadow: 0 18px 40px rgba(0, 0, 0, 0.4);
     transform: none;
   }
@@ -380,19 +366,37 @@ footer .credit {
     box-shadow: 0 0 30px rgba(250, 204, 21, 0.9);
     transform: scale(1.01);
   }
+  100% {
+    box-shadow: 0 18px 40px rgba(0, 0, 0, 0.4);
+    transform: none;
+  }
 }
 
-/* ====== 투표 추첨 UI ====== */
+.vote-config {
+  margin-top: 10px;
+  padding-top: 8px;
+  border-top: 1px solid #1f2937;
+}
 
-.vote-config,
-.vote-draw,
+.vote-draw {
+  margin-top: 10px;
+  padding-top: 8px;
+  border-top: 1px solid #1f2937;
+}
+
 .vote-results {
   margin-top: 10px;
   padding-top: 8px;
   border-top: 1px solid #1f2937;
 }
 
-.vote-config label,
+.vote-config label {
+  display: block;
+  font-size: 0.85rem;
+  color: var(--text-sub);
+  margin-bottom: 4px;
+}
+
 .vote-draw label {
   display: block;
   font-size: 0.85rem;
@@ -400,14 +404,28 @@ footer .credit {
   margin-bottom: 4px;
 }
 
-.vote-config-row,
+.vote-config-row {
+  display: flex;
+  gap: 8px;
+  align-items: center;
+}
+
 .vote-draw-row {
   display: flex;
   gap: 8px;
   align-items: center;
 }
 
-.vote-config-row input,
+.vote-config-row input {
+  flex: 1;
+  border-radius: 999px;
+  border: 1px solid #374151;
+  background: #020617;
+  padding: 6px 10px;
+  color: var(--text-main);
+  font-size: 0.9rem;
+}
+
 .vote-draw-row input {
   flex: 1;
   border-radius: 999px;
@@ -418,7 +436,12 @@ footer .credit {
   font-size: 0.9rem;
 }
 
-.vote-range-info,
+.vote-range-info {
+  margin-top: 6px;
+  font-size: 0.85rem;
+  color: var(--text-sub);
+}
+
 .vote-last-result {
   margin-top: 6px;
   font-size: 0.85rem;
@@ -457,11 +480,11 @@ footer .credit {
   padding: 2px 0;
 }
 
-.vote-result-item span.name {
+.vote-result-item .name {
   color: var(--text-main);
 }
 
-.vote-result-item span.num {
+.vote-result-item .num {
   color: #facc15;
   margin-left: 8px;
 }
@@ -475,4 +498,138 @@ footer .credit {
 .vote-export-buttons button {
   font-size: 0.78rem;
   padding-inline: 8px;
+}
+
+.results-controls {
+  display: flex;
+  justify-content: flex-end;
+  gap: 8px;
+  margin-bottom: 8px;
+}
+
+.results-table-wrap {
+  overflow-x: auto;
+  border: 1px solid #1f2937;
+  border-radius: 12px;
+  background: #020617;
+}
+
+.results-table {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: 0.9rem;
+}
+
+.results-table th {
+  padding: 8px 10px;
+  border-bottom: 1px solid #1f2937;
+  text-align: left;
+}
+
+.results-table td {
+  padding: 8px 10px;
+  border-bottom: 1px solid #1f2937;
+  text-align: left;
+}
+
+.results-table thead th {
+  color: #cbd5e1;
+  background: #0b1220;
+  position: sticky;
+  top: 0;
+}
+
+.results-table tbody tr.empty td {
+  color: var(--text-sub);
+  text-align: center;
+}
+
+.results-table tbody tr:nth-child(even) {
+  background: rgba(255, 255, 255, 0.02);
+}
+
+.results-actions {
+  display: flex;
+  gap: 6px;
+}
+
+.inline-input {
+  width: 100%;
+  border-radius: 8px;
+  border: 1px solid #374151;
+  background: #0b1220;
+  padding: 6px 8px;
+  color: var(--text-main);
+  font-size: 0.9rem;
+}
+
+.inline-input.num {
+  text-align: right;
+}
+
+/* ====== Bubble Overlay (투표 말풍선) ====== */
+
+.bubble-overlay {
+  position: fixed;
+  inset: 0;
+  background: rgba(0, 0, 0, 0.65);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 16px;
+  z-index: 9999;
+}
+
+.bubble-hidden {
+  display: none;
+}
+
+.bubble {
+  position: relative;
+  width: min(90vw, 480px);
+  max-width: 480px;
+  background: #0b1220;
+  border: 1px solid #334155;
+  border-radius: 16px;
+  padding: 24px 28px;
+  box-shadow: 0 30px 60px rgba(0, 0, 0, 0.6);
+  text-align: center;
+}
+
+.bubble::after {
+  content: "";
+  position: absolute;
+  bottom: -14px;
+  left: 50%;
+  transform: translateX(-50%);
+  border-width: 14px 14px 0 14px;
+  border-style: solid;
+  border-color: #0b1220 transparent transparent transparent;
+  filter: drop-shadow(0 -1px 0 #334155);
+}
+
+.bubble-title {
+  font-size: 1rem;
+  color: var(--text-sub);
+  margin-bottom: 6px;
+}
+
+.bubble-line {
+  font-size: 1rem;
+  color: var(--text-sub);
+  margin-bottom: 8px;
+}
+
+.bubble-number {
+  font-size: 5rem;
+  font-weight: 800;
+  letter-spacing: 0.06em;
+  color: #facc15;
+  margin-top: 6px;
+  margin-bottom: 12px;
+}
+
+#bubbleOkBtn {
+  font-size: 1rem;
+  padding: 8px 18px;
 }
